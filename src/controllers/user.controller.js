@@ -114,7 +114,7 @@ const loginUser = asyncHandler(async (req,res)=>{
     {
         throw new ApiError(404,"User Not Found!!!");
     }
-    
+
     const isPasswordValid = await user.isPasswordCorrect(password);
     console.log(isPasswordValid);
     if(!isPasswordValid)
@@ -139,12 +139,12 @@ const loginUser = asyncHandler(async (req,res)=>{
     ))
 });
 
-const logoutUser = asyncHandler(async ()=>{
+const logoutUser = asyncHandler(async (req,res)=>{
     await User.findByIdAndUpdate(
         req.user._id,
         {
-            $set:{
-                refreshToken:undefined
+            $unset:{
+                refreshToken:1
             }
         },
         {
@@ -161,9 +161,7 @@ const logoutUser = asyncHandler(async ()=>{
     .status(200)
     .clearCookie("accessToken",options)
     .clearCookie("refreshToken",options)
-    .json(new ApiResponse(200,{
-
-    },"User Logged Out!!!"))
+    .json(new ApiResponse(200,{},"User Logged Out!!!"))
 })
 
 
