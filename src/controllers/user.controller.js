@@ -100,6 +100,7 @@ const loginUser = asyncHandler(async (req,res)=>{
     //send in cookies
     //send response successfully login
     const {username,email,password} = req.body;
+    console.log(username,email,password);
     if(!username && !email)
     {
         throw new ApiError(400,"Username Or Emial Required!!")
@@ -113,10 +114,10 @@ const loginUser = asyncHandler(async (req,res)=>{
     {
         throw new ApiError(404,"User Not Found!!!");
     }
-
+    
     const isPasswordValid = await user.isPasswordCorrect(password);
-
-        if(!isPasswordValid)
+    console.log(isPasswordValid);
+    if(!isPasswordValid)
     {
         throw new ApiError(401,"Password Incorrect!!!");
     }
